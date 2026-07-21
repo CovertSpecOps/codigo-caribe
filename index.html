@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Código Caribe · Viajá al Caribe sin complicarte</title>
+<meta name="description" content="Te ayudo a planear viajes a Cancún, República Dominicana, Cartagena y Guatemala basados en experiencia real. No soy una agencia, soy Moisés.">
+<meta property="og:title" content="Código Caribe · Viajá al Caribe sin complicarte">
+<meta property="og:description" content="Planeación de viajes a Cancún, República Dominicana, Cartagena y Guatemala basada en experiencia real.">
+<meta property="og:image" content="assets/fondo.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌴</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,560;0,9..144,640;1,9..144,420&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand:      #f8f0e1;
+    --sand-deep: #f1e4cd;
+    --card:      #fffaf0;
+    --ink:       #402d1d;
+    --ink-soft:  #8a7157;
+    --coral:     #d95f38;
+    --coral-deep:#bf4c28;
+    --sea:       #177e7e;
+    --border:    #e7d6ba;
+    --shadow:    0 1px 2px rgba(64,45,29,.06), 0 8px 28px -12px rgba(64,45,29,.22);
+    --radius:    16px;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:"Instrument Sans", ui-sans-serif, sans-serif;
+    color:var(--ink);
+    background:var(--sand);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── Fondo fotográfico fijo ─────────────────────────── */
+  .bg{
+    position:fixed; inset:0; z-index:-2;
+    background:url("assets/fondo.jpg") center top / cover no-repeat;
+  }
+  .bg::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg,
+      rgba(248,240,225,.10) 0%,
+      rgba(248,240,225,.02) 30%,
+      rgba(248,240,225,.28) 100%);
+  }
+  @media (min-width: 900px){
+    .bg{ filter:blur(10px) saturate(1.05); transform:scale(1.06); }
+  }
+
+  /* ── Columna central ────────────────────────────────── */
+  .col{ max-width:34rem; margin:0 auto; padding:0 1.25rem; }
+
+  /* ── Hero sobre la foto ─────────────────────────────── */
+  .hero{
+    min-height:88svh;
+    display:flex; flex-direction:column; justify-content:center;
+    text-align:center;
+    padding:clamp(3rem,10vh,5rem) 0 3.5rem;
+    position:relative;
+  }
+  .hero::before{ /* velo suave para legibilidad sobre el cielo */
+    content:""; position:absolute; inset:-2rem -3rem;
+    background:radial-gradient(ellipse 90% 70% at 50% 45%,
+      rgba(252,246,234,.72) 0%, rgba(252,246,234,.38) 55%, transparent 78%);
+    z-index:-1;
+  }
+  .brand{
+    font-size:.78rem; font-weight:600; letter-spacing:.34em;
+    text-transform:uppercase; color:var(--ink);
+    display:flex; align-items:center; justify-content:center; gap:.8rem;
+    margin-bottom:clamp(1.5rem,5vh,2.5rem);
+  }
+  .brand::before,.brand::after{
+    content:""; height:1px; width:2.2rem;
+    background:currentColor; opacity:.45;
+  }
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:640; font-optical-sizing:auto;
+    font-size:clamp(2.1rem, 8.5vw, 3rem);
+    line-height:1.12; letter-spacing:-.015em;
+    text-wrap:balance;
+  }
+  h1 em{
+    font-style:italic; font-weight:420; color:var(--coral-deep);
+  }
+  .sub{
+    margin:1.1rem auto 0; max-width:26rem;
+    font-size:1.02rem; color:#5c4630; text-wrap:pretty;
+  }
+  .hero-cta{
+    display:flex; flex-direction:column; gap:.7rem;
+    align-items:center; margin-top:2rem;
+  }
+
+  /* ── Botones ────────────────────────────────────────── */
+  .btn{
+    display:flex; align-items:center; justify-content:center; gap:.55rem;
+    width:100%; max-width:22rem;
+    padding:.95rem 1.4rem;
+    border-radius:999px; border:1px solid transparent;
+    font:inherit; font-weight:600; font-size:1rem;
+    text-decoration:none; cursor:pointer;
+    transition:transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s, background .18s;
+  }
+  .btn:active{ transform:scale(.98); }
+  .btn-primary{
+    background:var(--coral); color:#fff8ef;
+    box-shadow:0 2px 4px rgba(191,76,40,.25), 0 10px 24px -8px rgba(191,76,40,.45);
+  }
+  .btn-primary:hover{ background:var(--coral-deep); transform:translateY(-1px); }
+  .btn-ivory{
+    background:rgba(255,250,240,.92); color:var(--ink);
+    border-color:var(--border); box-shadow:var(--shadow);
+  }
+  .btn-ivory:hover{ background:#fff; transform:translateY(-1px); }
+
+  /* ── Ola divisoria y hoja de arena ──────────────────── */
+  .wave{ display:block; width:100%; height:44px; margin-bottom:-1px; }
+  .sheet{
+    background:var(--sand);
+    padding-bottom:4rem;
+    box-shadow:0 -18px 40px -20px rgba(64,45,29,.25);
+  }
+
+  /* ── Secciones ──────────────────────────────────────── */
+  section{ padding-top:3.2rem; }
+  .label{
+    font-size:.72rem; font-weight:600; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ink-soft);
+    display:flex; align-items:center; gap:.75rem;
+    margin-bottom:1.4rem;
+  }
+  .label::after{ content:""; flex:1; height:1px; background:var(--border); }
+  h2{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:560; font-size:1.55rem; line-height:1.2;
+    margin-bottom:.9rem; letter-spacing:-.01em;
+  }
+
+  /* ── Quién soy ──────────────────────────────────────── */
+  .who{ display:grid; gap:1.2rem; }
+  .who-head{ display:flex; align-items:center; gap:1.1rem; }
+  .avatar{
+    width:84px; height:84px; flex-shrink:0;
+    border-radius:50%; overflow:hidden;
+    border:3px solid var(--card);
+    box-shadow:var(--shadow);
+    background:conic-gradient(from 210deg, #f4b263, #e0704a, #2a9d9d, #f4b263);
+    display:grid; place-items:center;
+    font-family:"Fraunces", serif; font-size:2rem; font-weight:640; color:#fff8ef;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .who-intro p:first-child{
+    font-family:"Fraunces", serif; font-size:1.3rem; font-weight:560; line-height:1.25;
+  }
+  .who-intro p:first-child em{ font-style:italic; font-weight:420; color:var(--coral-deep); }
+  .gaveta{
+    font-style:italic; color:var(--ink-soft); font-size:.98rem;
+    border-left:2px solid var(--border); padding-left:.9rem;
+  }
+
+  /* sellos de pasaporte */
+  .stamps{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:.8rem;
+    margin:.4rem 0;
+  }
+  .stamp{
+    border:1.5px dashed #b49a78; border-radius:10px;
+    padding:.65rem .8rem;
+    background:rgba(255,250,240,.65);
+    display:flex; align-items:baseline; gap:.5rem;
+    font-weight:500; font-size:.95rem;
+    transform:rotate(var(--tilt, 0deg));
+  }
+  .stamp b{
+    font-family:"Fraunces", serif; font-style:italic; font-weight:420;
+    color:var(--coral-deep); margin-left:auto;
+  }
+  .stamp:nth-child(1){ --tilt:-1.4deg; }
+  .stamp:nth-child(2){ --tilt:1.1deg; }
+  .stamp:nth-child(3){ --tilt:.9deg; }
+  .stamp:nth-child(4){ --tilt:-1deg; }
+  .who-close{ font-weight:600; }
+
+  /* redes */
+  .socials{ display:flex; gap:.7rem; margin-top:.3rem; }
+  .socials a{
+    width:44px; height:44px; border-radius:50%;
+    display:grid; place-items:center;
+    background:var(--card); border:1px solid var(--border);
+    color:var(--ink); box-shadow:var(--shadow);
+    transition:transform .18s, color .18s;
+  }
+  .socials a:hover{ transform:translateY(-2px); color:var(--coral-deep); }
+  .socials svg{ width:20px; height:20px; fill:currentColor; }
+
+  /* ── Listas de links (servicios y guías) ────────────── */
+  .links{ display:grid; gap:.65rem; }
+  .link-row{
+    display:flex; align-items:center; gap:.8rem;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:.85rem 1.05rem;
+    text-decoration:none; color:var(--ink);
+    font-weight:500; font-size:.98rem;
+    box-shadow:var(--shadow);
+    transition:transform .18s cubic-bezier(.22,1,.36,1), border-color .18s;
+  }
+  .link-row:hover{ transform:translateX(4px); border-color:#d9b98c; }
+  .link-row .emoji{ font-size:1.15rem; line-height:1; }
+  .link-row::after{
+    content:"→"; margin-left:auto; color:var(--ink-soft);
+    transition:transform .18s;
+  }
+  .link-row:hover::after{ transform:translateX(3px); color:var(--coral-deep); }
+  @media (min-width: 540px){
+    .links.dos-cols{ grid-template-columns:1fr 1fr; }
+  }
+  .pendiente{ opacity:.92; }
+
+  /* ── Formulario ─────────────────────────────────────── */
+  .form-card{
+    background:var(--card); border:1px solid var(--border);
+    border-radius:20px; padding:1.5rem; box-shadow:var(--shadow);
+  }
+  .form-card p.form-hint{ color:var(--ink-soft); font-size:.95rem; margin-bottom:1.1rem; }
+  .field{ margin-bottom:.9rem; }
+  .field label{
+    display:block; font-size:.82rem; font-weight:600;
+    letter-spacing:.04em; margin-bottom:.35rem; color:#5c4630;
+  }
+  .field input,.field textarea{
+    width:100%; font:inherit; color:var(--ink);
+    background:var(--sand); border:1px solid var(--border);
+    border-radius:12px; padding:.7rem .9rem;
+  }
+  .field textarea{ min-height:96px; resize:vertical; }
+  .field input:focus-visible,.field textarea:focus-visible,
+  .btn:focus-visible, a:focus-visible{
+    outline:2px solid var(--coral); outline-offset:2px;
+  }
+  .form-ok{
+    display:none; text-align:center; padding:1.5rem 0;
+    font-family:"Fraunces", serif; font-size:1.2rem;
+  }
+
+  /* ── Footer ─────────────────────────────────────────── */
+  footer{
+    text-align:center; padding:3.5rem 0 2.5rem;
+    color:var(--ink-soft); font-size:.86rem;
+  }
+  footer .huellas{ letter-spacing:.5em; display:block; margin-bottom:.6rem; }
+
+  /* ── Toast ──────────────────────────────────────────── */
+  .toast{
+    position:fixed; left:50%; bottom:1.4rem; z-index:10;
+    transform:translate(-50%, 140%);
+    background:var(--ink); color:var(--sand);
+    padding:.7rem 1.2rem; border-radius:999px;
+    font-size:.9rem; font-weight:500;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
+    max-width:90vw; text-align:center;
+  }
+  .toast.show{ transform:translate(-50%, 0); }
+
+  /* ── Animación de entrada ───────────────────────────── */
+  @media (prefers-reduced-motion: no-preference){
+    .rise{ opacity:0; transform:translateY(18px);
+      animation:rise .7s cubic-bezier(.22,1,.36,1) forwards;
+      animation-delay:var(--d, 0s); }
+    @keyframes rise{ to{ opacity:1; transform:none; } }
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero col">
+  <p class="brand rise" style="--d:.05s">Código Caribe</p>
+  <h1 class="rise" style="--d:.15s">Viajar al Caribe no tiene por qué ser <em>complicado.</em></h1>
+  <p class="sub rise" style="--d:.25s">Te ayudo a planear viajes a Cancún, República Dominicana, Cartagena y Guatemala basados en experiencia real.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary rise" style="--d:.35s" id="cta-whatsapp" href="#">✈️&nbsp; Quiero planear mi viaje</a>
+    <a class="btn btn-ivory rise" style="--d:.45s" data-link="planner" href="#">📥&nbsp; Descargar el Travel Planner gratis</a>
+  </div>
+</header>
+
+<svg class="wave" viewBox="0 0 1440 44" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,26 C240,50 480,2 720,18 C960,34 1200,10 1440,26 L1440,44 L0,44 Z" fill="#f8f0e1"/>
+</svg>
+
+<div class="sheet">
+  <main class="col">
+
+    <!-- ═══════════ QUIÉN SOY ═══════════ -->
+    <section id="quien-soy">
+      <p class="label">¿Quién soy?</p>
+      <div class="who">
+        <div class="who-head">
+          <div class="avatar" id="avatar">M</div>
+          <div class="who-intro">
+            <p>No soy una agencia. <em>Soy Moisés.</em></p>
+          </div>
+        </div>
+        <p class="gaveta">Mi primer pasaporte se venció guardado en una gaveta.</p>
+        <p>Hoy he viajado:</p>
+        <div class="stamps">
+          <div class="stamp">🇲🇽 México <b>×8</b></div>
+          <div class="stamp">🇬🇹 Guatemala <b>×2</b></div>
+          <div class="stamp">🇨🇴 Cartagena <b>✓</b></div>
+          <div class="stamp">🇩🇴 Rep. Dominicana <b>✓</b></div>
+        </div>
+        <p class="who-close">Cada destino que recomiendo ya lo recorrí personalmente.</p>
+        <div class="socials">
+          <a data-link="instagram" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.36 1.05.42 2.23.06 1.27.07 1.65.07 4.85s0 3.58-.07 4.85c-.06 1.18-.25 1.81-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.05.36-2.23.42-1.27.06-1.65.07-4.85.07s-3.58 0-4.85-.07c-1.18-.06-1.81-.25-2.23-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.36-1.05-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.58.07-4.85c.06-1.18.25-1.81.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.05-.36 2.23-.42C8.4 2.2 8.8 2.2 12 2.2m0-2.2C8.7 0 8.3 0 7 .07 5.8.13 4.9.33 4.1.63c-.8.3-1.5.73-2.2 1.4A6 6 0 0 0 .63 4.2C.33 5 .13 5.8.07 7 .01 8.3 0 8.7 0 12s0 3.7.07 5c.06 1.2.26 2 .56 2.8.3.8.73 1.5 1.4 2.2a6 6 0 0 0 2.17 1.4c.8.3 1.6.5 2.8.56 1.3.07 1.7.07 5 .07s3.7 0 5-.07c1.2-.06 2-.26 2.8-.56a6 6 0 0 0 2.2-1.4 6 6 0 0 0 1.4-2.2c.3-.8.5-1.6.56-2.8.07-1.3.07-1.7.07-5s0-3.7-.07-5c-.06-1.2-.26-2-.56-2.8-.3-.8-.73-1.5-1.4-2.2A6 6 0 0 0 19.8.63C19 .33 18.2.13 17 .07 15.7.01 15.3 0 12 0Zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4Zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-11.9a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0Z"/></svg>
+          </a>
+          <a data-link="tiktok" href="#" aria-label="TikTok">
+            <svg viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07Z"/></svg>
+          </a>
+          <a data-link="facebook" href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SERVICIOS ═══════════ -->
+    <section id="servicios">
+      <p class="label">Cómo te ayudo</p>
+      <div class="links">
+        <a class="link-row" data-link="planeacion" href="#"><span class="emoji">✈️</span> Planeación personalizada</a>
+        <a class="link-row" data-link="hoteles" href="#"><span class="emoji">🏨</span> Recomendación de hoteles</a>
+        <a class="link-row" data-link="asistencia" href="#"><span class="emoji">🛡️</span> Asistencia de viaje</a>
+        <a class="link-row" data-link="rentacarro" href="#"><span class="emoji">🚗</span> Rentas de carro</a>
+        <a class="link-row" data-link="tours" href="#"><span class="emoji">🎟️</span> Tours</a>
+        <a class="link-row" data-link="acompanamiento" href="#"><span class="emoji">💬</span> Acompañamiento antes y durante el viaje</a>
+      </div>
+    </section>
+
+    <!-- ═══════════ GUÍAS ═══════════ -->
+    <section id="guias">
+      <p class="label">Guías gratis</p>
+      <div class="links dos-cols">
+        <a class="link-row" data-link="planner" href="#"><span class="emoji">📄</span> Travel Planner</a>
+        <a class="link-row" data-link="pasaporte" href="#"><span class="emoji">📄</span> Cómo sacar el pasaporte</a>
+        <a class="link-row" data-link="migracion" href="#"><span class="emoji">📄</span> Cómo pasar migración</a>
+        <a class="link-row" data-link="checklistviaje" href="#"><span class="emoji">📄</span> Checklist de viaje</a>
+        <a class="link-row" data-link="checklistequipaje" href="#"><span class="emoji">📄</span> Checklist de equipaje</a>
+        <a class="link-row" data-link="empacarcancun" href="#"><span class="emoji">📄</span> Qué empacar para Cancún</a>
+        <a class="link-row" data-link="iticancun" href="#"><span class="emoji">📄</span> Itinerario Cancún</a>
+        <a class="link-row" data-link="itird" href="#"><span class="emoji">📄</span> Itinerario Rep. Dominicana</a>
+        <a class="link-row" data-link="iticartagena" href="#"><span class="emoji">📄</span> Itinerario Cartagena</a>
+        <a class="link-row" data-link="itiguatemala" href="#"><span class="emoji">📄</span> Itinerario Guatemala</a>
+      </div>
+    </section>
+
+    <!-- ═══════════ CONTACTO ═══════════ -->
+    <section id="contacto">
+      <p class="label">Escribime</p>
+      <div class="form-card">
+        <p class="form-hint">Contame a dónde soñás con ir y te respondo personalmente.</p>
+        <form id="form-contacto" novalidate>
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input id="f-nombre" name="nombre" type="text" required autocomplete="name" placeholder="Tu nombre">
+          </div>
+          <div class="field">
+            <label for="f-correo">Correo</label>
+            <input id="f-correo" name="correo" type="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com">
+          </div>
+          <div class="field">
+            <label for="f-mensaje">Mensaje corto</label>
+            <textarea id="f-mensaje" name="mensaje" required placeholder="Ej: Quiero ir a Cancún en diciembre con mi pareja…"></textarea>
+          </div>
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+          <button class="btn btn-primary" type="submit" style="max-width:none">🌴&nbsp; Enviar mensaje</button>
+        </form>
+        <p class="form-ok" id="form-ok">¡Mensaje enviado! Te escribo pronto. 🌊</p>
+      </div>
+    </section>
+
+    <footer>
+      <span class="huellas" aria-hidden="true">👣 👣 👣</span>
+      © <span id="anio"></span> Código Caribe · Hecho con arena en los pies, desde Costa Rica 🇨🇷
+    </footer>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   👉 CONFIGURACIÓN — editá SOLO esta parte.
+   Pegá aquí el número de WhatsApp, los links de Notion y las
+   redes. Los que queden en "" se marcan como "próximamente".
+   ═══════════════════════════════════════════════════════════ */
+const CONFIG = {
+  // Número de WhatsApp con código de país, solo dígitos. Ej: "50688887777"
+  WHATSAPP: "",
+  MENSAJE_WHATSAPP: "¡Hola Moisés! Vi tu página de Código Caribe y quiero planear mi viaje ✈️",
+
+  // Correo donde llegan los mensajes del formulario (usa formsubmit.co,
+  // el primer envío pide confirmar el correo). Ej: "moises@gmail.com"
+  CORREO_FORMULARIO: "",
+
+  // Foto de Moisés (ej: "assets/moises.jpg"). Vacío = inicial "M".
+  FOTO: "",
+
+  LINKS: {
+    // Redes sociales
+    instagram: "",
+    tiktok: "",
+    facebook: "",
+
+    // Servicios (links a Notion)
+    planeacion: "",
+    hoteles: "",
+    asistencia: "",
+    rentacarro: "",
+    tours: "",
+    acompanamiento: "",
+
+    // Guías (links a Notion)
+    planner: "",
+    pasaporte: "",
+    migracion: "",
+    checklistviaje: "",
+    checklistequipaje: "",
+    empacarcancun: "",
+    iticancun: "",
+    itird: "",
+    iticartagena: "",
+    itiguatemala: "",
+  },
+};
+/* ═══════════ Fin de la configuración ═══════════ */
+
+const $ = (s) => document.querySelector(s);
+const waLink = (texto) =>
+  `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(texto)}`;
+
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* CTA de WhatsApp */
+const cta = $("#cta-whatsapp");
+if (CONFIG.WHATSAPP) {
+  cta.href = waLink(CONFIG.MENSAJE_WHATSAPP);
+  cta.target = "_blank";
+  cta.rel = "noopener";
+} else {
+  cta.addEventListener("click", (e) => {
+    e.preventDefault();
+    toast("🚧 WhatsApp se activa pronto");
+  });
+}
+
+/* Links de Notion y redes */
+document.querySelectorAll("[data-link]").forEach((a) => {
+  const url = CONFIG.LINKS[a.dataset.link];
+  if (url) {
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+  } else {
+    a.classList.add("pendiente");
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      toast("🚧 Esta guía estará lista muy pronto");
+    });
+  }
+});
+
+/* Foto */
+if (CONFIG.FOTO) {
+  $("#avatar").innerHTML = `<img src="${CONFIG.FOTO}" alt="Moisés en el Caribe">`;
+}
+
+/* Formulario: manda por formsubmit.co si hay correo configurado;
+   si no, abre WhatsApp con el mensaje ya escrito. */
+$("#form-contacto").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  if (!form.reportValidity()) return;
+  const datos = Object.fromEntries(new FormData(form));
+
+  if (CONFIG.CORREO_FORMULARIO) {
+    const btn = form.querySelector("button");
+    btn.disabled = true;
+    btn.textContent = "Enviando…";
+    try {
+      const r = await fetch(`https://formsubmit.co/ajax/${CONFIG.CORREO_FORMULARIO}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          nombre: datos.nombre,
+          correo: datos.correo,
+          mensaje: datos.mensaje,
+          _subject: "Nuevo mensaje desde Código Caribe 🌴",
+        }),
+      });
+      if (!r.ok) throw new Error();
+      form.style.display = "none";
+      $("#form-ok").style.display = "block";
+    } catch {
+      toast("😕 No se pudo enviar. Probá de nuevo o escribime por WhatsApp.");
+      btn.disabled = false;
+      btn.innerHTML = "🌴&nbsp; Enviar mensaje";
+    }
+  } else if (CONFIG.WHATSAPP) {
+    const texto = `¡Hola! Soy ${datos.nombre} (${datos.correo}). ${datos.mensaje}`;
+    window.open(waLink(texto), "_blank", "noopener");
+  } else {
+    toast("🚧 El formulario se activa pronto");
+  }
+});
+
+$("#anio").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
