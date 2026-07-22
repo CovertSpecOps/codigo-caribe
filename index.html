@@ -422,7 +422,8 @@ const CONFIG = {
     tiktok: "https://www.tiktok.com/@moitravelagent",
     facebook: "https://www.facebook.com/profile.php?id=61588717754681",
 
-    // Servicios (links a Notion)
+    // Servicios: por defecto abren WhatsApp con el mensaje de MENSAJES_SERVICIOS.
+    // Si algún día pegás aquí un link de Notion, el link gana sobre WhatsApp.
     planeacion: "",
     hoteles: "",
     asistencia: "",
@@ -441,6 +442,16 @@ const CONFIG = {
     itird: "",
     iticartagena: "",
     itiguatemala: "",
+  },
+
+  // Mensaje pre-escrito de WhatsApp para cada servicio.
+  MENSAJES_SERVICIOS: {
+    planeacion: "¡Hola Moisés! Me interesa la planeación personalizada de mi viaje ✈️",
+    hoteles: "¡Hola Moisés! Quiero una recomendación de hoteles 🏨",
+    asistencia: "¡Hola Moisés! Me interesa la asistencia de viaje 🛡️",
+    rentacarro: "¡Hola Moisés! Quiero cotizar la renta de un carro 🚗",
+    tours: "¡Hola Moisés! Me interesan los tours 🎟️",
+    acompanamiento: "¡Hola Moisés! Me interesa el acompañamiento antes y durante el viaje 💬",
   },
 };
 /* ═══════════ Fin de la configuración ═══════════ */
@@ -470,11 +481,17 @@ if (CONFIG.WHATSAPP) {
   });
 }
 
-/* Links de Notion y redes */
+/* Links de Notion, redes y servicios (servicios sin link → WhatsApp) */
 document.querySelectorAll("[data-link]").forEach((a) => {
-  const url = CONFIG.LINKS[a.dataset.link];
+  const key = a.dataset.link;
+  const url = CONFIG.LINKS[key];
+  const mensaje = CONFIG.MENSAJES_SERVICIOS[key];
   if (url) {
     a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+  } else if (mensaje && CONFIG.WHATSAPP) {
+    a.href = waLink(mensaje);
     a.target = "_blank";
     a.rel = "noopener";
   } else {

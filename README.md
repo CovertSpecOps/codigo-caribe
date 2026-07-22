@@ -36,8 +36,10 @@ en `index.html`.
    envío llega con un link de confirmación de formsubmit.co — hay que darle clic
    una vez y listo.
 3. **Foto**: guardá la foto en `assets/moises.jpg` y poné `FOTO: "assets/moises.jpg"`.
-4. **Links de Notion y redes**: pegá cada URL en `LINKS`. Los que queden en `""`
-   muestran un aviso de "próximamente" en vez de un link roto.
+4. **Links de Notion y redes**: pegá cada URL en `LINKS`. Las guías que queden
+   en `""` muestran un aviso de "próximamente" en vez de un link roto. Los
+   **servicios** sin link abren WhatsApp con un mensaje pre-escrito (editable en
+   `MENSAJES_SERVICIOS`); si un servicio tiene link de Notion, el link gana.
 
 ## Deploy
 
