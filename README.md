@@ -2,7 +2,8 @@
 
 Landing tipo *link-in-bio* para Moisés: asesoría de viajes a Cancún, República Dominicana, Cartagena y Guatemala basada en experiencia real.
 
-**En vivo:** https://covertspecops.github.io/codigo-caribe/
+**En vivo:** https://codigocaribe.lat (GitHub Pages con dominio propio; la URL
+vieja covertspecops.github.io/codigo-caribe redirige sola)
 
 ## Funel de ventas
 
